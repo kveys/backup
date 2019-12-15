@@ -21,6 +21,7 @@ hostdir=$bindir/hosts
 logdir=$bindir/log
 logfile=$logdir/backup.log
 dir2bu2=/tmp
+servername=`hostname`
 
 # S3 specific 
 s3bucket="bckp151219"
@@ -50,6 +51,7 @@ fi
 ###################
 
 echo -e "`now`;script start" | tee -a $logfile
+echo $servername
 
 #reading dirs to backup
 hosts2backup=$(find $hostdir -type f -printf %f\ )
@@ -82,11 +84,11 @@ for host in $hosts2backup; do
 	fi
 
 	#uploading TAR.GZ file
-	$aws s3 cp $dir2bu2/`echo $host`_$timestamp.tar.gz s3://$s3bucket
+	$aws s3 cp $dir2bu2/`echo $host`_$timestamp.tar.gz s3://$s3bucket/$servername/
 	s3result=$?
 	if [ "$s3result" == 0 ];then
 		echo -e "`now` S3: uploaded TAR.GZfile successfully" | tee -a $logfile
-		$rm -f $dir2bu2/`echo $host`_$timestamp.tar.gz
+		#$rm -f $dir2bu2/`echo $host`_$timestamp.tar.gz
 		rmresult=$?
 			if [ "$rmresult" == 0 ];then
 				echo -e "`now` RM: TAR.GZfile successfully removed from $dir2bu2" | tee -a $logfile
