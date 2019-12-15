@@ -13,18 +13,17 @@
 gzip=/bin/gzip
 rm=/bin/rm
 tar=/bin/tar
-s3=/usr/bin/s3cmd
+aws=/usr/local/bin/aws
 
 #global
-bindir=/usr/local/bin/backup/
+bindir=/usr/local/bin/backup
 hostdir=$bindir/hosts
 logdir=$bindir/log
 logfile=$logdir/backup.log
 dir2bu2=/tmp
 
 # S3 specific 
-s3cfg=/root/.s3cfg
-s3bucket="backup.pucky"
+s3bucket="bckp151219"
 
 #functions
 
@@ -83,8 +82,7 @@ for host in $hosts2backup; do
 	fi
 
 	#uploading TAR.GZ file
-	#$s3 -c $s3cfg put $dir2bu2/`echo $host`_$timestamp.tar.gz s3://$s3bucket
-	$s3 put $dir2bu2/`echo $host`_$timestamp.tar.gz s3://$s3bucket
+	$aws s3 cp $dir2bu2/`echo $host`_$timestamp.tar.gz s3://$s3bucket
 	s3result=$?
 	if [ "$s3result" == 0 ];then
 		echo -e "`now` S3: uploaded TAR.GZfile successfully" | tee -a $logfile
