@@ -1,3 +1,4 @@
 /var/www/html/dokuwiki/conf
 /var/www/html/dokuwiki/data/pages
 /var/www/html/dokuwiki/data/media 
+/var/www/html/dokuwiki/data/attic 
