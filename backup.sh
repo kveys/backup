@@ -17,7 +17,7 @@ aws=/usr/local/bin/aws
 
 #global
 bindir=/usr/local/bin/backup
-hostdir=$bindir/hosts
+appsdir=$bindir/apps
 logdir=$bindir/log
 logfile=$logdir/backup.log
 dir2bu2=/tmp
@@ -54,18 +54,18 @@ echo -e "`now`;script start" | tee -a $logfile
 echo $servername
 
 #reading dirs to backup
-hosts2backup=$(find $hostdir -type f -printf %f\ )
+apps2backup=$(find $appsdir -type f -printf %f\ )
 
 #create timestamp	
 timestamp=`now`
 
-for host in $hosts2backup; do
-	echo processing $host| tee -a $logfile
+for apps in $apps2backup; do
+	echo processing $apps| tee -a $logfile
 
 	#creating TAR file
-	$tar -cf $dir2bu2/`echo $host`_$timestamp.tar --files-from /dev/null
-	for dir in `cat $hostdir/$host`; do
-		$tar -rf $dir2bu2/`echo $host`_$timestamp.tar $dir 
+	$tar -cf $dir2bu2/`echo $apps`_$timestamp.tar --files-from /dev/null
+	for dir in `cat $appsdir/$apps`; do
+		$tar -rf $dir2bu2/`echo $apps`_$timestamp.tar $dir 
 		tarresult=$?
 		if [ "$tarresult" == 0 ];then
 			echo -e "`now` TAR: added $dir successfully" | tee -a $logfile
@@ -75,7 +75,7 @@ for host in $hosts2backup; do
 	done
 
 	#zipping TAR file
-	$gzip $dir2bu2/`echo $host`_$timestamp.tar
+	$gzip $dir2bu2/`echo $apps`_$timestamp.tar
 	gzipresult=$?
 	if [ "$gzipresult" == 0 ];then
 		echo -e "`now` GZIP: gzipped TARfile successfully" | tee -a $logfile
@@ -84,11 +84,11 @@ for host in $hosts2backup; do
 	fi
 
 	#uploading TAR.GZ file
-	$aws s3 cp $dir2bu2/`echo $host`_$timestamp.tar.gz s3://$s3bucket/$servername/
+	$aws s3 cp $dir2bu2/`echo $apps`_$timestamp.tar.gz s3://$s3bucket/$servername/
 	s3result=$?
 	if [ "$s3result" == 0 ];then
 		echo -e "`now` S3: uploaded TAR.GZfile successfully" | tee -a $logfile
-		#$rm -f $dir2bu2/`echo $host`_$timestamp.tar.gz
+		#$rm -f $dir2bu2/`echo $apps`_$timestamp.tar.gz
 		rmresult=$?
 			if [ "$rmresult" == 0 ];then
 				echo -e "`now` RM: TAR.GZfile successfully removed from $dir2bu2" | tee -a $logfile
