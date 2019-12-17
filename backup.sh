@@ -16,7 +16,7 @@ tar=/bin/tar
 aws=/usr/local/bin/aws
 
 #global
-bindir=/usr/local/bin/backup
+bindir=/opt/backup
 appsdir=$bindir/apps
 logdir=$bindir/log
 logfile=$logdir/backup.log
