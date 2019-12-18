@@ -21,9 +21,6 @@ appsdir=$bindir/apps
 logdir=$bindir/log
 servername=`hostname`
 
-# S3 specific 
-s3bucket="bckp151219"
-
 #functions
 
 #timestamp
@@ -35,12 +32,11 @@ date +"%d%m%Y_%H%M"
 # start of script #
 ###################
 
-echo -e "`now`;installing backup script" | tee -a $logfile
-echo $servername
+echo -e "`now`;installing backup script on $servernaam"
 
 mkdir $bindir
+
 mv $tmpdir/backup/backup.sh $bindir
-mv $tmpdir/backup/log $bindir
 mv $tmpdir/backup/apps $bindir
 mv $tmpdir/backup/backup.cron /etc/cron.d/backup
 
