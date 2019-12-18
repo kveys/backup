@@ -21,18 +21,11 @@ appsdir=$bindir/apps
 logdir=$bindir/log
 servername=`hostname`
 
-#functions
-
-#timestamp
-now(){
-date +"%d%m%Y_%H%M"
-}
-
 ###################
 # start of script #
 ###################
 
-echo -e "`now`;installing backup script on $servernaam"
+echo "installing backup script on $servername"
 
 mkdir $bindir
 
