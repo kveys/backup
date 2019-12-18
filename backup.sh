@@ -3,7 +3,7 @@
 # create a backup to Amazon S3
 #
 # Author: Koen Veys
-# script is maintained in https://github.com/kveys/linux/backup.sh
+# script is maintained in https://github.com/kveys/backup.git
 # documenation is at: https://dwkoen.ddns.net/doku.php?id/linux:backup.sh
 
 #
