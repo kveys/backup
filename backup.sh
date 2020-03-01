@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# create a backup to Amazon S3
+# create a backup to Amazon S3 or an NFS host
 #
 # Author: Koen Veys
 # script is maintained in https://github.com/kveys/backup.git
@@ -117,6 +117,11 @@ for apps in $apps2backup; do
 	fi
 
 done
+
+#unmounting NFS
+if [ "$upload" == "NFS" ];then
+	$umount $NFSMNT 
+fi
 
 echo -e "`now`;script end" | tee -a $logfile
 echo -e "==================================================================="  | tee -a $logfile
